@@ -1,5 +1,15 @@
 <resources>
     <string name="app_name">StockBrowser</string>
+
+    <string name="action_settings">Settings</string>
+    <string name="action_share">Share</string>
+    <string name="action_open">Open</string>
+
+
+    <string name="sample_heading">Lorem Ipsum</string>
+    <string name="sample_sentence">Donec eget vehicula turpis. Duis mollis vulputate sapien vel condimentum.</string>
+    <string name="sample_paragraph">Curabitur felis ipsum, porttitor ut quam a, blandit pharetra leo. Aliquam volutpat tincidunt diam, eu facilisis metus tristique nec. Quisque molestie risus et sem aliquam, in dapibus libero mattis. Donec ac blandit justo. Nam pulvinar varius luctus. Pellentesque vehicula congue dapibus.</string>
+
     <string name="large_text">
         "Material is the metaphor.\n\n"
 
@@ -89,5 +99,5 @@
         "For example, position the FAB to one side of stream of a cards so the FAB won’t interfere "
         "when a user tries to pick up one of cards.\n\n"
     </string>
-    <string name="action_settings">Settings</string>
+
 </resources>
