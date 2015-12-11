@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -13,9 +12,9 @@ import android.view.MenuItem;
 import android.view.View;
 
 import net.steppschuh.stockbrowser.shutterstock.CollectionData;
-import net.steppschuh.stockbrowser.shutterstock.ShutterStockApi;
 import net.steppschuh.stockbrowser.shutterstock.CollectionList;
 import net.steppschuh.stockbrowser.ui.CollectionAdapter;
+import net.steppschuh.stockbrowser.ui.DynamicLayoutManager;
 
 import java.util.ArrayList;
 
@@ -26,6 +25,8 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
 public class MainActivity extends AppCompatActivity {
+
+    public static final String TAG = StockBrowser.TAG + "." + MainActivity.class.getSimpleName();
 
     private StockBrowser app;
     private Subscription featuredCollectionsSubscription;
@@ -64,18 +65,13 @@ public class MainActivity extends AppCompatActivity {
 
         // RecylerView
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
-        recyclerView.setHasFixedSize(true);
 
         // Create an empty adapter for the recycler view
         collectionAdapter = new CollectionAdapter(this, new ArrayList<CollectionData>());
         recyclerView.setAdapter(collectionAdapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-    }
 
-    private void renderCollections(CollectionList collectionList) {
-        if (collectionList != null && collectionList.getData() != null) {
-            collectionAdapter.setCollections(collectionList.getData());
-        }
+        // Setup a layout manager to make the list more dynamic
+        recyclerView.setLayoutManager(new DynamicLayoutManager(2, DynamicLayoutManager.VERTICAL));
     }
 
     private void subscribeToFeaturedCollections() {
@@ -87,19 +83,22 @@ public class MainActivity extends AppCompatActivity {
 
                     @Override
                     public void onCompleted() {
-                        Log.d(ShutterStockApi.class.getSimpleName(), "onCompleted");
+                        collectionAdapter.notifyDataSetChanged();
                     }
 
                     @Override
                     public void onError(Throwable e) {
-                        Log.e(ShutterStockApi.class.getSimpleName(), "onError");
                         e.printStackTrace();
                     }
 
                     @Override
                     public void onNext(CollectionList collectionList) {
-                        Log.d(ShutterStockApi.class.getSimpleName(), "onNext");
-                        renderCollections(collectionList);
+                        if (collectionList != null && collectionList.getData() != null) {
+                            Log.d(TAG, "Received collection list with " + collectionList.getData().size() + " items");
+                            collectionAdapter.setCollections(collectionList.getData());
+                        } else {
+                            Log.w(TAG, "Received collection list with invalid data");
+                        }
                     }
 
                 });
@@ -107,16 +106,12 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement

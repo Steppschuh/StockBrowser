@@ -19,7 +19,7 @@ import retrofit.RxJavaCallAdapterFactory;
 
 public class ShutterStockApi {
 
-    public static final String TAG = StockBrowser.class.getSimpleName();
+    public static final String TAG = StockBrowser.TAG + "." + ShutterStockApi.class.getSimpleName();
 
     public static final String API_BASE_URL = "https://api.shutterstock.com";
     public static final String API_CLIENT_ID = "b4047938138e9864c698";
@@ -31,7 +31,7 @@ public class ShutterStockApi {
     public ShutterStockApi() {
         Log.d(TAG, "Initializing " + TAG);
 
-        // Create the HttpClient
+        // Create the HTTP client
         OkHttpClient client = createHttpClient(API_CLIENT_ID, API_CLIENT_SECRET);
 
         // Build a retrofit instance
@@ -51,9 +51,6 @@ public class ShutterStockApi {
             throw new InvalidParameterException("Invalid authentication credentials");
         }
 
-        OkHttpClient client = new OkHttpClient();
-        client.interceptors().add(new LoggingInterceptor());
-
         // Set basic authentication
         String credentials = clientId + ":" + clientSecret;
         final String basicAuthentication = "Basic " + Base64.encodeToString(credentials.getBytes(), Base64.NO_WRAP);
@@ -69,6 +66,9 @@ public class ShutterStockApi {
                 return chain.proceed(newRequest);
             }
         };
+
+        // Create the client
+        OkHttpClient client = new OkHttpClient();
         client.interceptors().add(interceptor);
 
         return client;

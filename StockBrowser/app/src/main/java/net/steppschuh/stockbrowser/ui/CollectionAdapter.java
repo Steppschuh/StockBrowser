@@ -2,10 +2,10 @@ package net.steppschuh.stockbrowser.ui;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -32,7 +32,7 @@ public class CollectionAdapter extends RecyclerView.Adapter<CollectionAdapter.Ca
         LayoutInflater inflater = LayoutInflater.from(context);
 
         // Inflate the card item layout
-        View contactView = inflater.inflate(R.layout.list_item, parent, false);
+        View contactView = inflater.inflate(R.layout.tile_list_item, parent, false);
 
         // Return a new holder instance
         CardViewHolder cardViewHolder = new CardViewHolder(contactView);
@@ -51,9 +51,18 @@ public class CollectionAdapter extends RecyclerView.Adapter<CollectionAdapter.Ca
         ImageView coverImage = cardViewHolder.coverImage;
         Picasso.with(context)
                 .load(collection.getCoverItem().getUrl())
+                .fit()
+                .centerCrop()
                 .into(coverImage);
 
         cardViewHolder.headingText.setText(collection.getName());
+
+        // Dynamically resize the view
+        if (false) {
+            boolean fullSpan = Math.random() < 0.2;
+            StaggeredGridLayoutManager.LayoutParams layoutParams = (StaggeredGridLayoutManager.LayoutParams) cardViewHolder.itemView.getLayoutParams();
+            layoutParams.setFullSpan(fullSpan);
+        }
     }
 
     @Override
@@ -75,17 +84,11 @@ public class CollectionAdapter extends RecyclerView.Adapter<CollectionAdapter.Ca
 
         public ImageView coverImage;
         public TextView headingText;
-        public TextView descriptionText;
-        public Button openButton;
-        public Button shareButton;
 
         public CardViewHolder(View cardView) {
             super(cardView);
             coverImage = (ImageView) cardView.findViewById(R.id.card_cover_image);
             headingText = (TextView) cardView.findViewById(R.id.card_heading);
-            descriptionText = (TextView) cardView.findViewById(R.id.card_description);
-            openButton = (Button) cardView.findViewById(R.id.card_action_open);
-            shareButton = (Button) cardView.findViewById(R.id.card_action_share);
         }
     }
 }
