@@ -15,10 +15,7 @@
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler_view"
-        android:paddingTop="2dp"
-        android:paddingBottom="2dp"
-        android:paddingLeft="2dp"
-        android:paddingRight="2dp"
+        android:padding="@dimen/tile_padding"
         android:clipToPadding="false"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />

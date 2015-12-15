@@ -5,10 +5,16 @@
     <string name="action_share">Share</string>
     <string name="action_open">Open</string>
 
-
     <string name="sample_heading">Lorem Ipsum</string>
     <string name="sample_sentence">Donec eget vehicula turpis. Duis mollis vulputate sapien vel condimentum.</string>
     <string name="sample_paragraph">Curabitur felis ipsum, porttitor ut quam a, blandit pharetra leo. Aliquam volutpat tincidunt diam, eu facilisis metus tristique nec. Quisque molestie risus et sem aliquam, in dapibus libero mattis. Donec ac blandit justo. Nam pulvinar varius luctus. Pellentesque vehicula congue dapibus.</string>
+
+    <string name="hire_action">Contact Steppschuh</string>
+    <string name="hire_subject">Demo App Feedback</string>
+    <string name="hire_body">Hey Stephan,\nI had a look at your demo app and I think you would be a great fit for our mobile team! Please get back to me if you\'re interested and we\'ll schedule a call.</string>
+
+    <string name="contact_mail">contact@steppschuh.net</string>
+    <string name="contact_phone">+4915154854847</string>
 
     <string name="large_text">
         "Material is the metaphor.\n\n"

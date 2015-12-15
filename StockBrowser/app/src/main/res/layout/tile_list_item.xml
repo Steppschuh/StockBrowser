@@ -1,34 +1,31 @@
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-
     android:clickable="true"
+    android:focusable="true"
     android:background="?attr/selectableItemBackground"
     android:gravity="bottom"
-    android:paddingTop="2dp"
-    android:paddingBottom="2dp"
-    android:paddingLeft="2dp"
-    android:paddingRight="2dp"
+    android:padding="@dimen/tile_padding"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
     <ImageView
-        android:id="@+id/card_cover_image"
+        android:id="@+id/tile_cover_image"
         android:src="@color/colorPrimary"
         android:scaleType="centerCrop"
         android:layout_width="match_parent"
         android:layout_height="@dimen/tile_height" />
 
     <LinearLayout
-        android:id="@+id/card_content"
+        android:id="@+id/tile_title_container"
         android:orientation="vertical"
         android:padding="16dp"
         android:background="@color/colorOverlayDark"
-        android:layout_alignBottom="@id/card_cover_image"
+        android:layout_alignBottom="@id/tile_cover_image"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <TextView
-            android:id="@+id/card_heading"
+            android:id="@+id/tile_title"
             android:text="@string/sample_heading"
             style="@style/Base.TextAppearance.AppCompat.Headline"
             android:textSize="16sp"
