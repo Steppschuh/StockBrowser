@@ -3,6 +3,7 @@ package net.steppschuh.stockbrowser;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -31,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
     private StockBrowser app;
     private Subscription featuredCollectionsSubscription;
     private CollectionAdapter collectionAdapter;
+    private SwipeRefreshLayout swipeRefreshLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,14 +59,25 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                subscribeToFeaturedCollections();
 
                 Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             }
         });
 
+        // SwipeRefreshLayout
+        swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_container);
+        swipeRefreshLayout.setColorSchemeResources(R.color.colorAccent);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                subscribeToFeaturedCollections();
+            }
+        });
+
         // RecylerView
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
+        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
 
         // Create an empty adapter for the recycler view
         collectionAdapter = new CollectionAdapter(this, new ArrayList<CollectionData>());
@@ -84,17 +97,24 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onCompleted() {
                         collectionAdapter.notifyDataSetChanged();
+                        swipeRefreshLayout.setRefreshing(false);
                     }
 
                     @Override
                     public void onError(Throwable e) {
                         e.printStackTrace();
+                        swipeRefreshLayout.setRefreshing(false);
                     }
 
                     @Override
                     public void onNext(CollectionList collectionList) {
                         if (collectionList != null && collectionList.getData() != null) {
                             Log.d(TAG, "Received collection list with " + collectionList.getData().size() + " items");
+
+                            // randomize data for demonstration purposes
+                            collectionList.randomizeData();
+
+                            // update the adapter data set
                             collectionAdapter.setCollections(collectionList.getData());
                         } else {
                             Log.w(TAG, "Received collection list with invalid data");

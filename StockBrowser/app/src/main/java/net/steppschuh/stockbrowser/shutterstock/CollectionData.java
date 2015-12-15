@@ -19,6 +19,21 @@ public class CollectionData {
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
     /**
+     * Checks if all required fields contain valid values
+     */
+    public boolean isValidCollection() {
+        if (name == null || name.length() < 1) {
+            return false;
+        }
+
+        if (coverItem == null || coverItem.getUrl() == null || coverItem.getUrl().length() < 1) {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
      * 
      * @return
      *     The totalItemCount
@@ -169,5 +184,4 @@ public class CollectionData {
     public void setAdditionalProperty(String name, Object value) {
         this.additionalProperties.put(name, value);
     }
-
 }

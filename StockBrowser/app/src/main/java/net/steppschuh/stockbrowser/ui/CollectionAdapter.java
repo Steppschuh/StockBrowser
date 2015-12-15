@@ -2,12 +2,12 @@ package net.steppschuh.stockbrowser.ui;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
@@ -56,13 +56,6 @@ public class CollectionAdapter extends RecyclerView.Adapter<CollectionAdapter.Ca
                 .into(coverImage);
 
         cardViewHolder.headingText.setText(collection.getName());
-
-        // Dynamically resize the view
-        if (false) {
-            boolean fullSpan = Math.random() < 0.2;
-            StaggeredGridLayoutManager.LayoutParams layoutParams = (StaggeredGridLayoutManager.LayoutParams) cardViewHolder.itemView.getLayoutParams();
-            layoutParams.setFullSpan(fullSpan);
-        }
     }
 
     @Override
@@ -80,7 +73,7 @@ public class CollectionAdapter extends RecyclerView.Adapter<CollectionAdapter.Ca
 
     // Direct reference to each view within a collection item
     // Used to cache the views within the item layout for fast access
-    public static class CardViewHolder extends RecyclerView.ViewHolder {
+    public class CardViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         public ImageView coverImage;
         public TextView headingText;
@@ -89,6 +82,14 @@ public class CollectionAdapter extends RecyclerView.Adapter<CollectionAdapter.Ca
             super(cardView);
             coverImage = (ImageView) cardView.findViewById(R.id.card_cover_image);
             headingText = (TextView) cardView.findViewById(R.id.card_heading);
+
+            cardView.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View view) {
+            CollectionData data = collections.get(getLayoutPosition());
+            Toast.makeText(context, data.getName(), Toast.LENGTH_SHORT).show();
         }
     }
 }

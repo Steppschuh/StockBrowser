@@ -2,14 +2,24 @@
 package net.steppschuh.stockbrowser.shutterstock;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 public class CollectionList {
 
     private List<CollectionData> data = new ArrayList<CollectionData>();
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+
+    /**
+     * Randomizes the CollectionData items. Just for demonstration purposes.
+     */
+    public void randomizeData() {
+        // change the order of items
+        Collections.shuffle(data, new Random(System.nanoTime()));
+    }
 
     /**
      * 
