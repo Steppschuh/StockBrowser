@@ -103,6 +103,9 @@ public class CollectionAdapter extends RecyclerView.Adapter<CollectionAdapter.Ti
             tileView.setOnClickListener(this);
         }
 
+        /**
+         * Initiates a background color animation for the title container
+         */
         private void updatePalette(Bitmap bitmap) {
             new Palette.Builder(bitmap).generate(new Palette.PaletteAsyncListener() {
                 public void onGenerated(Palette palette) {
@@ -120,6 +123,9 @@ public class CollectionAdapter extends RecyclerView.Adapter<CollectionAdapter.Ti
         @Override
         public void onClick(View view) {
             CollectionData data = collections.get(getLayoutPosition());
+
+            //TODO: open collection
+
             Toast.makeText(context, data.getName(), Toast.LENGTH_SHORT).show();
         }
 

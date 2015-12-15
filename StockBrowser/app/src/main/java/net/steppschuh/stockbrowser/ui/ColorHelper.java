@@ -11,6 +11,9 @@ public final class ColorHelper {
 
     public static final int DEFAULT_FADE_DURATION = 500;
 
+    /**
+     * Reduces the alpha value of a given color by a given factor
+     */
     public static int adjustAlpha(int color, float factor) {
         int alpha = Math.round(Color.alpha(color) * factor);
         int red = Color.red(color);
@@ -19,6 +22,10 @@ public final class ColorHelper {
         return Color.argb(alpha, red, green, blue);
     }
 
+    /**
+     * Returns the background color of a given view if present,
+     * transparent if not
+     */
     public static int getBackgroundColor(View view) {
         int color = Color.TRANSPARENT;
         Drawable background = view.getBackground();
@@ -32,6 +39,9 @@ public final class ColorHelper {
         fadeBackgroundColor(view, getBackgroundColor(view), colorTo, DEFAULT_FADE_DURATION);
     }
 
+    /**
+     * Animates a background color change of a given view
+     */
     public static void fadeBackgroundColor(final View view, int colorFrom, int colorTo, int duration) {
         ValueAnimator colorAnimation = ValueAnimator.ofObject(new ArgbEvaluator(), colorFrom, colorTo);
         colorAnimation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
