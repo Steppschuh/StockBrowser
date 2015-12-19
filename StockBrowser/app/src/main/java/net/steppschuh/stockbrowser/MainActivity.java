@@ -2,21 +2,24 @@ package net.steppschuh.stockbrowser;
 
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.transition.Fade;
+import android.transition.Transition;
 import android.util.DisplayMetrics;
 import android.util.Log;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
 import net.steppschuh.stockbrowser.shutterstock.CollectionData;
 import net.steppschuh.stockbrowser.shutterstock.CollectionList;
 import net.steppschuh.stockbrowser.ui.CollectionAdapter;
+import net.steppschuh.stockbrowser.ui.ColorHelper;
 import net.steppschuh.stockbrowser.ui.DynamicLayoutManager;
 
 import java.util.ArrayList;
@@ -47,6 +50,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         setupUi();
+        setupTransitions();
 
         subscribeToFeaturedCollections();
     }
@@ -82,14 +86,54 @@ public class MainActivity extends AppCompatActivity {
         collectionAdapter = new CollectionAdapter(this, new ArrayList<CollectionData>());
         recyclerView.setAdapter(collectionAdapter);
 
-        // Get screen dimensions to calculate number of coloumns
+        // Get screen dimensions to calculate number of columns
         DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
         float screenWidth = displayMetrics.widthPixels / displayMetrics.density;
         float defaultTileHeight = getResources().getDimension(R.dimen.tile_height) / displayMetrics.density;
 
         // Setup a layout manager to make the list more dynamic
-        int numberOfColoumns = Math.max(2, (int) Math.floor(screenWidth / defaultTileHeight));
-        recyclerView.setLayoutManager(new DynamicLayoutManager(numberOfColoumns, DynamicLayoutManager.VERTICAL));
+        int numberOfColumns = Math.max(2, (int) Math.floor(screenWidth / defaultTileHeight));
+        recyclerView.setLayoutManager(new DynamicLayoutManager(numberOfColumns, DynamicLayoutManager.VERTICAL));
+    }
+
+    private void setupTransitions() {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+            return;
+        }
+
+        // Enter transition
+        //getWindow().setEnterTransition(new Fade());
+
+        // Exit transition
+        Transition exitTransition = new Fade();
+        exitTransition.addListener(new Transition.TransitionListener() {
+            @Override
+            public void onTransitionStart(Transition transition) {
+                Log.d(TAG, "onTransitionStart");
+            }
+
+            @Override
+            public void onTransitionEnd(Transition transition) {
+                Log.d(TAG, "onTransitionEnd");
+            }
+
+            @Override
+            public void onTransitionCancel(Transition transition) {
+                Log.d(TAG, "onTransitionCancel");
+            }
+
+            @Override
+            public void onTransitionPause(Transition transition) {
+                Log.d(TAG, "onTransitionPause");
+            }
+
+            @Override
+            public void onTransitionResume(Transition transition) {
+                Log.d(TAG, "onTransitionResume");
+            }
+        });
+
+        //getWindow().setExitTransition(exitTransition);
     }
 
     private void subscribeToFeaturedCollections() {
@@ -121,6 +165,9 @@ public class MainActivity extends AppCompatActivity {
 
                             // update the adapter data set
                             collectionAdapter.setCollections(collectionList.getData());
+
+                            // set the data in the global application class for later
+                            app.setCollections(collectionList.getData());
                         } else {
                             Log.w(TAG, "Received collection list with invalid data");
                         }
@@ -141,12 +188,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
@@ -161,8 +202,15 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        ColorHelper.fadeStatusBarToDefaultColor(this);
+    }
+
+    @Override
     protected void onDestroy() {
         featuredCollectionsSubscription.unsubscribe();
         super.onDestroy();
     }
+
 }

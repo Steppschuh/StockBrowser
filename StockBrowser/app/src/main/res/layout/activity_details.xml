@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    tools:context="net.steppschuh.stockbrowser.DetailsActivity">
+
+    <RelativeLayout
+        android:id="@+id/app_bar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/app_bar_height">
+
+        <ImageView
+            android:id="@+id/tile_cover_image"
+            android:transitionName="coverImage"
+            android:src="@color/colorPrimary"
+            android:scaleType="centerCrop"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <LinearLayout
+            android:id="@+id/tile_title_container"
+            android:transitionName="titleTextContainer"
+            android:orientation="horizontal"
+            android:padding="16dp"
+            android:gravity="bottom"
+            android:background="@color/colorOverlayDark"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/tile_title"
+                android:transitionName="titleText"
+                android:text="@string/sample_heading"
+                style="@style/Base.TextAppearance.AppCompat.Headline"
+                android:textSize="16sp"
+                android:textColor="@android:color/white"
+                android:ellipsize="end"
+                android:gravity="bottom"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+    <ScrollView
+        android:layout_below="@id/app_bar"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:text="@string/sample_paragraph"
+            android:padding="16dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </ScrollView>
+
+</RelativeLayout>

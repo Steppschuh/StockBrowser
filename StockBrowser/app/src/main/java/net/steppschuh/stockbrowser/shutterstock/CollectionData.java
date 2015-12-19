@@ -8,6 +8,8 @@ import java.util.Map;
 
 public class CollectionData {
 
+    public static final String KEY_ID = "key_id";
+
     @SerializedName("total_item_count") private int totalItemCount;
     @SerializedName("items_updated_time") private String itemsUpdatedTime;
     private String name;

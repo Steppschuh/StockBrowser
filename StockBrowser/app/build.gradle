@@ -6,11 +6,13 @@ android {
 
     defaultConfig {
         applicationId "net.steppschuh.stockbrowser"
-        minSdkVersion 16
+        minSdkVersion 18
         targetSdkVersion 23
         versionCode 1
         versionName "1.0"
         multiDexEnabled true
+        renderscriptTargetApi 19
+        renderscriptSupportModeEnabled true
     }
     buildTypes {
         release {

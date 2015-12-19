@@ -1,11 +1,15 @@
 package net.steppschuh.stockbrowser.ui;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.TransitionDrawable;
+import android.support.v4.app.ActivityOptionsCompat;
+import android.support.v4.util.Pair;
 import android.support.v7.graphics.Palette;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -20,6 +24,7 @@ import android.widget.Toast;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 
+import net.steppschuh.stockbrowser.DetailsActivity;
 import net.steppschuh.stockbrowser.R;
 import net.steppschuh.stockbrowser.shutterstock.CollectionData;
 
@@ -114,7 +119,7 @@ public class CollectionAdapter extends RecyclerView.Adapter<CollectionAdapter.Ti
                     int mutedDark = palette.getDarkMutedColor(muted);
 
                     // adjust the alpha value and use it as title text background
-                    int titleBackground = ColorHelper.adjustAlpha(mutedDark, 0.66f);
+                    int titleBackground = ColorHelper.adjustAlpha(mutedDark, ColorHelper.HARD_OVERLAY_ALPHA);
                     ColorHelper.fadeBackgroundColor(titleTextContainer, titleBackground);
                 }
             });
@@ -122,9 +127,24 @@ public class CollectionAdapter extends RecyclerView.Adapter<CollectionAdapter.Ti
 
         @Override
         public void onClick(View view) {
+            // get the collection that this view belongs to
             CollectionData data = collections.get(getLayoutPosition());
 
-            //TODO: open collection
+            // create a new intent for the details activity
+            Intent intent = new Intent(context, DetailsActivity.class);
+
+            // pass the id of the current collection
+            intent.putExtra(CollectionData.KEY_ID, data.getId());
+
+            // specify shared elements to create a scene transition
+            Pair[] sharedElements = new Pair[] {
+                    Pair.create(coverImage, "coverImage"),
+                    Pair.create(titleText, "titleText"),
+                    Pair.create(titleTextContainer, "titleTextContainer")
+            };
+
+            ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation((Activity) context, sharedElements);
+            context.startActivity(intent, options.toBundle());
 
             Toast.makeText(context, data.getName(), Toast.LENGTH_SHORT).show();
         }
@@ -139,7 +159,7 @@ public class CollectionAdapter extends RecyclerView.Adapter<CollectionAdapter.Ti
 
             // set and invoke the TransitionDrawable
             coverImage.setImageDrawable(transitionDrawable);
-            transitionDrawable.startTransition(ColorHelper.DEFAULT_FADE_DURATION);
+            transitionDrawable.startTransition(AnimationHelper.DEFAULT_FADE_DURATION);
 
             updatePalette(bitmap);
         }

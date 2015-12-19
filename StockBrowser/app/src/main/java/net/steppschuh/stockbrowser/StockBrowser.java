@@ -4,7 +4,10 @@ import android.app.Activity;
 import android.support.multidex.MultiDexApplication;
 import android.util.Log;
 
+import net.steppschuh.stockbrowser.shutterstock.CollectionData;
 import net.steppschuh.stockbrowser.shutterstock.ShutterStockApi;
+
+import java.util.List;
 
 public class StockBrowser extends MultiDexApplication {
 
@@ -14,6 +17,7 @@ public class StockBrowser extends MultiDexApplication {
     private Activity contextActivity;
 
     private ShutterStockApi shutterStockApi;
+    private List<CollectionData> collections;
 
     public void initialize(Activity contextActivity) {
         Log.d(TAG, "Initializing " + TAG);
@@ -42,5 +46,13 @@ public class StockBrowser extends MultiDexApplication {
 
     public void setShutterStockApi(ShutterStockApi shutterStockApi) {
         this.shutterStockApi = shutterStockApi;
+    }
+
+    public List<CollectionData> getCollections() {
+        return collections;
+    }
+
+    public void setCollections(List<CollectionData> collections) {
+        this.collections = collections;
     }
 }

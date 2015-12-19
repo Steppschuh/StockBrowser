@@ -19,9 +19,8 @@
     <LinearLayout
         android:id="@+id/tile_title_container"
         android:transitionName="titleTextContainer"
-        android:orientation="vertical"
+        android:orientation="horizontal"
         android:padding="16dp"
-        android:gravity="bottom"
         android:background="@color/colorOverlayDark"
         android:layout_alignBottom="@id/tile_cover_image"
         android:layout_width="match_parent"
@@ -36,7 +35,6 @@
             android:textColor="@android:color/white"
             android:ellipsize="end"
             android:singleLine="true"
-            android:gravity="bottom"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 

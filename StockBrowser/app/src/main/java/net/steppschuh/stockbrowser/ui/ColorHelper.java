@@ -2,14 +2,24 @@ package net.steppschuh.stockbrowser.ui;
 
 import android.animation.ArgbEvaluator;
 import android.animation.ValueAnimator;
+import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
+import android.support.v4.content.ContextCompat;
 import android.view.View;
+
+import net.steppschuh.stockbrowser.R;
+
+import static android.animation.ValueAnimator.ofObject;
 
 public final class ColorHelper {
 
-    public static final int DEFAULT_FADE_DURATION = 500;
+    public static final float HARD_OVERLAY_ALPHA = 0.66f;
+    public static final float SOFT_OVERLAY_ALPHA = 0.33f;
+
 
     /**
      * Reduces the alpha value of a given color by a given factor
@@ -36,7 +46,7 @@ public final class ColorHelper {
     }
 
     public static void fadeBackgroundColor(final View view, int colorTo) {
-        fadeBackgroundColor(view, getBackgroundColor(view), colorTo, DEFAULT_FADE_DURATION);
+        fadeBackgroundColor(view, getBackgroundColor(view), colorTo, AnimationHelper.DEFAULT_FADE_DURATION);
     }
 
     /**
@@ -52,6 +62,26 @@ public final class ColorHelper {
         });
         colorAnimation.setDuration(duration);
         colorAnimation.start();
+    }
+
+    public static void fadeStatusBarToDefaultColor(final Activity activity) {
+        fadeStatusBarToColor(activity, ContextCompat.getColor(activity, R.color.colorPrimary), AnimationHelper.DEFAULT_FADE_DURATION);
+    }
+
+    public static void fadeStatusBarToColor(final Activity activity, int targetColor, long duration) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            int currentColor = activity.getWindow().getStatusBarColor();
+            ValueAnimator colorAnimation = ofObject(new ArgbEvaluator(), currentColor, targetColor);
+            colorAnimation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                @SuppressLint("NewApi")
+                @Override
+                public void onAnimationUpdate(ValueAnimator animator) {
+                    activity.getWindow().setStatusBarColor((Integer) animator.getAnimatedValue());
+                }
+            });
+            colorAnimation.setDuration(duration);
+            colorAnimation.start();
+        }
     }
 
 }
