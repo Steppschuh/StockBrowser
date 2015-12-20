@@ -1,0 +1,14 @@
+<resources>
+
+    <!-- Action bar -->
+    <dimen name="app_bar_height">230dp</dimen>
+    <dimen name="fab_margin">64dp</dimen>
+
+    <!-- Content -->
+    <dimen name="content_horizontal_padding">64dp</dimen>
+    <dimen name="content_vertical_padding">32dp</dimen>
+
+    <!-- Tiles -->
+    <dimen name="tile_title_size">18sp</dimen>
+
+</resources>

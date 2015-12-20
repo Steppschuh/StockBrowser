@@ -11,6 +11,7 @@ import com.squareup.okhttp.Response;
 import net.steppschuh.stockbrowser.StockBrowser;
 
 import java.io.IOException;
+import java.net.InetAddress;
 import java.security.InvalidParameterException;
 
 import retrofit.GsonConverterFactory;
@@ -22,6 +23,8 @@ public class ShutterStockApi {
     public static final String TAG = StockBrowser.TAG + "." + ShutterStockApi.class.getSimpleName();
 
     public static final String API_BASE_URL = "https://api.shutterstock.com";
+
+    // please don't blame me for making this public
     public static final String API_CLIENT_ID = "b4047938138e9864c698";
     public static final String API_CLIENT_SECRET = "786ad86b618d44e78a8c82880ca4b74fa047dd06";
 
@@ -72,6 +75,23 @@ public class ShutterStockApi {
         client.interceptors().add(interceptor);
 
         return client;
+    }
+
+    /**
+     * Checks if the API is reachable. May returns false if ShutterStock is down
+     * or the device is not connected to the internet.
+     */
+    public static boolean isReachable() {
+        try {
+            InetAddress ipAddr = InetAddress.getByName(API_BASE_URL);
+            if (ipAddr.equals("")) {
+                return false;
+            } else {
+                return true;
+            }
+        } catch (Exception e) {
+            return false;
+        }
     }
 
     public ApiEndpointInterface getEndpoints() {

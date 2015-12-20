@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
+    android:fitsSystemWindows="false"
     tools:context="net.steppschuh.stockbrowser.DetailsActivity">
 
     <RelativeLayout
@@ -25,7 +25,10 @@
             android:id="@+id/tile_title_container"
             android:transitionName="titleTextContainer"
             android:orientation="horizontal"
-            android:padding="16dp"
+            android:paddingTop="@dimen/tile_title_padding"
+            android:paddingBottom="@dimen/content_vertical_padding"
+            android:paddingLeft="@dimen/content_horizontal_padding"
+            android:paddingRight="@dimen/tile_title_padding"
             android:gravity="bottom"
             android:background="@color/colorOverlayDark"
             android:layout_width="match_parent"
@@ -36,7 +39,7 @@
                 android:transitionName="titleText"
                 android:text="@string/sample_heading"
                 style="@style/Base.TextAppearance.AppCompat.Headline"
-                android:textSize="16sp"
+                android:textSize="@dimen/tile_title_size"
                 android:textColor="@android:color/white"
                 android:ellipsize="end"
                 android:gravity="bottom"
@@ -50,12 +53,16 @@
     <ScrollView
         android:layout_below="@id/app_bar"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        android:paddingTop="@dimen/content_vertical_padding"
+        android:paddingBottom="@dimen/content_vertical_padding"
+        android:paddingLeft="@dimen/content_horizontal_padding"
+        android:paddingRight="@dimen/content_horizontal_padding"
+        android:clipToPadding="false"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <TextView
             android:text="@string/sample_paragraph"
-            android:padding="16dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 

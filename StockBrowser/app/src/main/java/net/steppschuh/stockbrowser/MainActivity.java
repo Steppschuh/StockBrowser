@@ -5,12 +5,11 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.transition.Fade;
-import android.transition.Transition;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.MenuItem;
@@ -18,6 +17,7 @@ import android.view.View;
 
 import net.steppschuh.stockbrowser.shutterstock.CollectionData;
 import net.steppschuh.stockbrowser.shutterstock.CollectionList;
+import net.steppschuh.stockbrowser.shutterstock.ShutterStockApi;
 import net.steppschuh.stockbrowser.ui.CollectionAdapter;
 import net.steppschuh.stockbrowser.ui.ColorHelper;
 import net.steppschuh.stockbrowser.ui.DynamicLayoutManager;
@@ -52,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
         setupUi();
         setupTransitions();
 
-        subscribeToFeaturedCollections();
+        loadFeaturedCollections();
     }
 
     private void setupUi() {
@@ -81,6 +81,7 @@ public class MainActivity extends AppCompatActivity {
 
         // RecylerView
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
+        recyclerView.setHasFixedSize(true);
 
         // Create an empty adapter for the recycler view
         collectionAdapter = new CollectionAdapter(this, new ArrayList<CollectionData>());
@@ -101,39 +102,20 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
-        // Enter transition
-        //getWindow().setEnterTransition(new Fade());
+        // TODO: Add some fancy transitions for exit and return
+        // maybe a bottom slide for the collections
+    }
 
-        // Exit transition
-        Transition exitTransition = new Fade();
-        exitTransition.addListener(new Transition.TransitionListener() {
-            @Override
-            public void onTransitionStart(Transition transition) {
-                Log.d(TAG, "onTransitionStart");
-            }
-
-            @Override
-            public void onTransitionEnd(Transition transition) {
-                Log.d(TAG, "onTransitionEnd");
-            }
-
-            @Override
-            public void onTransitionCancel(Transition transition) {
-                Log.d(TAG, "onTransitionCancel");
-            }
-
-            @Override
-            public void onTransitionPause(Transition transition) {
-                Log.d(TAG, "onTransitionPause");
-            }
-
-            @Override
-            public void onTransitionResume(Transition transition) {
-                Log.d(TAG, "onTransitionResume");
-            }
-        });
-
-        //getWindow().setExitTransition(exitTransition);
+    private void loadFeaturedCollections() {
+        // Check if we already have collections available
+        if (app.getCollections() != null && app.getCollections().size() > 0) {
+            // Restore collections
+            collectionAdapter.setCollections(app.getCollections());
+            collectionAdapter.notifyDataSetChanged();
+        } else {
+            // Request collections from the ShutterStock API
+            subscribeToFeaturedCollections();
+        }
     }
 
     private void subscribeToFeaturedCollections() {
@@ -151,7 +133,30 @@ public class MainActivity extends AppCompatActivity {
 
                     @Override
                     public void onError(Throwable e) {
+                        Log.e(TAG, "Unable to load collections: " + e.getMessage());
                         e.printStackTrace();
+
+                        // Create a snackbar with an error message
+                        final Snackbar errorBar = Snackbar.make(swipeRefreshLayout, R.string.error_unknown, Snackbar.LENGTH_INDEFINITE);
+
+                        // Try to troubleshoot the issue
+                        if (!ShutterStockApi.isReachable()) {
+                            errorBar.setText(R.string.error_no_network);
+                        } else {
+                            // TODO: catch more possible issues
+                            errorBar.setText(R.string.error_loading_images);
+                        }
+
+                        // Offer an action to retry loading the collections
+                        errorBar.setAction(R.string.action_retry, new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                errorBar.dismiss();
+                                subscribeToFeaturedCollections();
+                            }
+                        });
+                        errorBar.show();
+
                         swipeRefreshLayout.setRefreshing(false);
                     }
 
@@ -205,11 +210,14 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         ColorHelper.fadeStatusBarToDefaultColor(this);
+
     }
 
     @Override
     protected void onDestroy() {
-        featuredCollectionsSubscription.unsubscribe();
+        if (featuredCollectionsSubscription != null) {
+            featuredCollectionsSubscription.unsubscribe();
+        }
         super.onDestroy();
     }
 

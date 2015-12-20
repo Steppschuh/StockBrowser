@@ -117,7 +117,7 @@ public class DetailsActivity extends AppCompatActivity {
                     coverImage.setImageDrawable(new BitmapDrawable(getResources(), bitmap));
 
                     // blur the image in a new thread for a transition drawable
-                    Thread thread = new Thread() {
+                    (new Thread() {
                         @Override
                         public void run() {
                             try {
@@ -137,8 +137,7 @@ public class DetailsActivity extends AppCompatActivity {
                                 e.printStackTrace();
                             }
                         }
-                    };
-                    thread.start();
+                    }).start();
 
                     // calculate a palette in order to update the UI colors
                     updatePalette(bitmap);
@@ -260,6 +259,7 @@ public class DetailsActivity extends AppCompatActivity {
                 int titleBackground = ColorHelper.adjustAlpha(mutedDark, ColorHelper.HARD_OVERLAY_ALPHA);
                 ColorHelper.fadeBackgroundColor(titleTextContainer, titleBackground);
 
+                // also tint the status bar
                 ColorHelper.fadeStatusBarToColor(contextActivity, mutedDark, AnimationHelper.DEFAULT_FADE_DURATION);
             }
         });

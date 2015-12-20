@@ -1,9 +1,17 @@
 <resources>
+
+    <!-- Action bar -->
     <dimen name="app_bar_height">180dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
-    <dimen name="text_margin">16dp</dimen>
 
+    <!-- Content -->
+    <dimen name="content_horizontal_padding">16dp</dimen>
+    <dimen name="content_vertical_padding">16dp</dimen>
+
+    <!-- Tiles -->
     <dimen name="tile_height">@dimen/app_bar_height</dimen>
     <dimen name="tile_padding">2dp</dimen>
+    <dimen name="tile_title_padding">16dp</dimen>
+    <dimen name="tile_title_size">16sp</dimen>
 
 </resources>

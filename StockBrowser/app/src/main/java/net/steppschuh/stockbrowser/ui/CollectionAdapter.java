@@ -19,7 +19,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
@@ -145,8 +144,6 @@ public class CollectionAdapter extends RecyclerView.Adapter<CollectionAdapter.Ti
 
             ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation((Activity) context, sharedElements);
             context.startActivity(intent, options.toBundle());
-
-            Toast.makeText(context, data.getName(), Toast.LENGTH_SHORT).show();
         }
 
         @Override

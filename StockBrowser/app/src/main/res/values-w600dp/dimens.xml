@@ -1,0 +1,9 @@
+<resources>
+
+    <!-- Action bar -->
+    <dimen name="fab_margin">32dp</dimen>
+
+    <!-- Content -->
+    <dimen name="content_horizontal_padding">32dp</dimen>
+
+</resources>
