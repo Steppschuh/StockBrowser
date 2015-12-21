@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.NetworkOnMainThreadException;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -215,8 +216,12 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
-        if (featuredCollectionsSubscription != null) {
-            featuredCollectionsSubscription.unsubscribe();
+        try {
+            if (featuredCollectionsSubscription != null) {
+                featuredCollectionsSubscription.unsubscribe();
+            }
+        } catch (NetworkOnMainThreadException ex) {
+            // May happens during test execution
         }
         super.onDestroy();
     }

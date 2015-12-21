@@ -2,7 +2,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="net.steppschuh.stockbrowser">
 
+    <!-- Required to fetch data from the ShutterStock API -->
     <uses-permission android:name="android.permission.INTERNET" />
+
+    <!-- Just needed to create screenshots for testing with Spoon -->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 
     <application
         android:allowBackup="true"

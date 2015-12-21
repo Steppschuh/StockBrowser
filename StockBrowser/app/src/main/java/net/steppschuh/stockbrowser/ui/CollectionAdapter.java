@@ -44,11 +44,11 @@ public class CollectionAdapter extends RecyclerView.Adapter<CollectionAdapter.Ti
         Context context = parent.getContext();
         LayoutInflater inflater = LayoutInflater.from(context);
 
-        // Inflate the card item layout
-        View contactView = inflater.inflate(R.layout.tile_list_item, parent, false);
+        // Inflate the tile item layout
+        View tileView = inflater.inflate(R.layout.tile_list_item, parent, false);
 
         // Return a new holder instance
-        TileViewHolder tileViewHolder = new TileViewHolder(contactView);
+        TileViewHolder tileViewHolder = new TileViewHolder(tileView);
         return tileViewHolder;
     }
 
