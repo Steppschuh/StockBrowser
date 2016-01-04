@@ -49,21 +49,17 @@ public class ShutterStockApi {
         endpoints = retrofit.create(ApiEndpointInterface.class);
     }
 
-    private OkHttpClient createHttpClient(String clientId, String clientSecret) throws InvalidParameterException {
+    public static OkHttpClient createHttpClient(final String clientId, final String clientSecret) throws InvalidParameterException {
         if (clientId == null || clientSecret == null) {
             throw new InvalidParameterException("Invalid authentication credentials");
         }
-
-        // Set basic authentication
-        String credentials = clientId + ":" + clientSecret;
-        final String basicAuthentication = "Basic " + Base64.encodeToString(credentials.getBytes(), Base64.NO_WRAP);
 
         // Define the interceptor, add authentication header
         Interceptor interceptor = new Interceptor() {
             @Override
             public Response intercept(Chain chain) throws IOException {
                 Request newRequest = chain.request().newBuilder()
-                        .addHeader("Authorization", basicAuthentication)
+                        .addHeader("Authorization", generateBasicAuthHeader(clientId, clientSecret))
                         .build();
 
                 return chain.proceed(newRequest);
@@ -75,6 +71,14 @@ public class ShutterStockApi {
         client.interceptors().add(interceptor);
 
         return client;
+    }
+
+    /**
+     * Encodes credentials for basic authentication
+     */
+    public static String generateBasicAuthHeader(String username, String password) {
+        String credentials = username + ":" + password;
+        return "Basic " + Base64.encodeToString(credentials.getBytes(), Base64.NO_WRAP);
     }
 
     /**
@@ -97,4 +101,5 @@ public class ShutterStockApi {
     public ApiEndpointInterface getEndpoints() {
         return endpoints;
     }
+
 }

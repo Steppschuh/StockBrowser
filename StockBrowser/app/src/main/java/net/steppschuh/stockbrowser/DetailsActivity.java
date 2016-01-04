@@ -32,7 +32,7 @@ public class DetailsActivity extends AppCompatActivity {
     public static final String TAG = StockBrowser.TAG + "." + DetailsActivity.class.getSimpleName();
 
     private StockBrowser app;
-    private CollectionData collection;
+    CollectionData collection;
 
     private ImageView coverImage;
     private TextView titleText;
@@ -64,7 +64,7 @@ public class DetailsActivity extends AppCompatActivity {
     /**
      * Parses the passed bundles and tries to return the desired collection
      */
-    private CollectionData restoreCollection(Bundle intentExtras, Bundle savedInstanceExtras) throws NullPointerException {
+    public CollectionData restoreCollection(Bundle intentExtras, Bundle savedInstanceExtras) throws NullPointerException {
         if (app.getCollections() == null) {
             // TODO: fetch collections instead of throwing an exception
             throw new NullPointerException("No collections available");
@@ -172,32 +172,6 @@ public class DetailsActivity extends AppCompatActivity {
 
         // Enter transition
         Transition enterTransition = new AutoTransition();
-        enterTransition.addListener(new Transition.TransitionListener() {
-            @Override
-            public void onTransitionStart(Transition transition) {
-
-            }
-
-            @Override
-            public void onTransitionEnd(Transition transition) {
-
-            }
-
-            @Override
-            public void onTransitionCancel(Transition transition) {
-
-            }
-
-            @Override
-            public void onTransitionPause(Transition transition) {
-
-            }
-
-            @Override
-            public void onTransitionResume(Transition transition) {
-
-            }
-        });
         getWindow().setSharedElementEnterTransition(enterTransition);
 
         // Return transition

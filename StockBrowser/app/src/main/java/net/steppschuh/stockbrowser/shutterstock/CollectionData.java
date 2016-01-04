@@ -24,11 +24,19 @@ public class CollectionData {
      * Checks if all required fields contain valid values
      */
     public boolean isValidCollection() {
+        if (id == null || id.length() < 1) {
+            return false;
+        }
+
         if (name == null || name.length() < 1) {
             return false;
         }
 
         if (coverItem == null || coverItem.getUrl() == null || coverItem.getUrl().length() < 1) {
+            return false;
+        }
+
+        if (totalItemCount < 1) {
             return false;
         }
 
